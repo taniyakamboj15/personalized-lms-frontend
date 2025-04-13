@@ -5,8 +5,7 @@ import Contact from "./Components/Contact";
 import Home from "./Components/Home";
 import About from "./Components/About";
 import CoursesShimmer from "./Components/CourseShimmer";
-
-const Applayout = lazy(() => import("./Components/Applayout"));
+import Applayout from "./Components/Applayout";
 
 const Error = lazy(() => import("./Components/Error"));
 const Login = lazy(() => import("./Components/Login"));
@@ -24,11 +23,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Suspense fallback={<LoadingSpinner />}>
-        <Applayout />
-      </Suspense>
-    ),
+    element: <Applayout />,
     children: [
       {
         path: "/",
