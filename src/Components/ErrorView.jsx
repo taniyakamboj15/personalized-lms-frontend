@@ -1,4 +1,3 @@
-// components/ErrorView.jsx
 export const ErrorView = ({ message, onRetry }) => {
   return (
     <div className='p-4 text-center text-red-600'>

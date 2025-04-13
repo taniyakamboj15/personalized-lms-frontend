@@ -15,7 +15,7 @@ const Dashboard = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const prevLevel = useRef(0);
 
-  const { name, imageUrl } = useSelector((state) => state.user.user || {});
+  const { name } = useSelector((state) => state.user?.user || {});
 
   useEffect(() => {
     const getSize = () => {

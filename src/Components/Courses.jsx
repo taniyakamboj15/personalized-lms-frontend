@@ -3,10 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import loginPopUp from "./loginNotification";
-import { toast } from "react-toastify";
 import ProgressBar from "./ProgressBar";
 import { api } from "../utils/api";
-import LoadingSpinner from "./LoadingSpinner";
+import CoursesShimmer from "./CourseShimmer";
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
   const [enrolledCourseIds, setEnrolledCourseIds] = useState([]);
@@ -79,7 +78,7 @@ const CoursesPage = () => {
   };
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <CoursesShimmer />;
   }
 
   if (error) {

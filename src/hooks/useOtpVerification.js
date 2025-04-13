@@ -1,7 +1,6 @@
 // hooks/useOtpVerification.js
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import { BASE_URL } from "../constants/constant";
+import { api } from "../utils/api";
 import { toast } from "react-toastify";
 
 const useOtpVerification = () => {
@@ -24,7 +23,7 @@ const useOtpVerification = () => {
   const sendOtp = async (email) => {
     setOtpLoading(true);
     try {
-      await axios.post(`${BASE_URL}auth/sendOtp`, { email });
+      await api.post(`auth/sendOtp`, { email });
       toast.success("OTP sent to your email");
       setIsOtpSent(true);
       startTimer();
@@ -38,7 +37,7 @@ const useOtpVerification = () => {
   const verifyOtp = async (email, otp) => {
     setOtpLoading(true);
     try {
-      const res = await axios.post(`${BASE_URL}auth/verifyOtp`, {
+      const res = await api.post(`auth/verifyOtp`, {
         email,
         otp,
       });

@@ -1,7 +1,5 @@
-// hooks/useAdminForm.js
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { BASE_URL } from "../constants/constant";
+import { api } from "../utils/api";
 import {
   validateCourse,
   validateTopic,
@@ -50,8 +48,8 @@ export const useAdminForm = () => {
   const fetchData = async () => {
     try {
       const [courseRes, topicRes] = await Promise.all([
-        axios.get(`${BASE_URL}course`),
-        axios.get(`${BASE_URL}topic`),
+        api.get(`course`),
+        api.get(`topic`),
       ]);
       setCourses(courseRes.data);
       setTopics(topicRes.data);
@@ -100,7 +98,7 @@ export const useAdminForm = () => {
         endpoint = "admin/add-question";
       }
 
-      await axios.post(`${BASE_URL}${endpoint}`, payload, {
+      await api.post(`${endpoint}`, payload, {
         withCredentials: true,
       });
 

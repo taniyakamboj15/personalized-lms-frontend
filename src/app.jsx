@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Contact from "./Components/Contact";
 import Home from "./Components/Home";
 import About from "./Components/About";
+import CoursesShimmer from "./Components/CourseShimmer";
 
 const Applayout = lazy(() => import("./Components/Applayout"));
 
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
       {
         path: "/courses",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense fallback={<CoursesShimmer />}>
             <CoursesPage />
           </Suspense>
         ),
