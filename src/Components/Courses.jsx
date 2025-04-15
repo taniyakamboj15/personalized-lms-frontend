@@ -65,7 +65,7 @@ const CoursesPage = () => {
   const handleEnroll = async (courseId) => {
     try {
       if (!isLoggedIn) {
-        loginPopUp(navigate);
+        loginPopUp({ navigate, path: `/courses` });
         return;
       }
       await api.post("progress/init", { courseId });

@@ -17,18 +17,10 @@ const UpdatePassword = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await api.put(
-        "user/update-password",
-        {
-          currentPassword: form.currentPassword,
-          newPassword: form.newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // or from context
-          },
-        }
-      );
+      const res = await api.put("user/update-password", {
+        currentPassword: form.currentPassword,
+        newPassword: form.newPassword,
+      });
       toast.success(res.data.msg);
       setForm({ currentPassword: "", newPassword: "" });
     } catch (err) {
@@ -66,7 +58,8 @@ const UpdatePassword = () => {
         </div>
         <button
           type='submit'
-          className='bg-indigo-400 hover:bg-indigo-500 text-white  px-4 py-2 rounded'
+          className='bg-indigo-400 hover:bg-indigo-500 text-white  px-4 py-2 rounded '
+          disabled={isLoading}
         >
           {isLoading ? (
             <span className='loading loading-dots loading-md'></span>

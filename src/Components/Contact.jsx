@@ -53,7 +53,7 @@ const Contact = () => {
                   <strong>📍 Company:</strong> Eduvibe Technologies Pvt. Ltd.
                 </li>
                 <li>
-                  <strong>📞 Phone:</strong> +91 98765 43210
+                  <strong>📞 Phone:</strong> +91 98765 XXXXX
                 </li>
                 <li>
                   <strong>✉️ Email:</strong> contact@eduvibe.in

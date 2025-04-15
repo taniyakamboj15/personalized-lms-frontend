@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { api } from "../utils/api";
-
+import ShimmerCard from "./ShimmerCard";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const USERS_PER_PAGE = 6;
 
 const AdminUserList = () => {
@@ -10,6 +12,15 @@ const AdminUserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [roleFilter, setRoleFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const role = useSelector((store) => store?.user?.user?.role);
+  // const [authorised,setAuthorised] = useState(true)
+  useEffect(() => {
+    if (!role || role !== "admin") {
+      navigate("/");
+    }
+  }, [role, navigate]);
 
   useEffect(() => {
     fetchUsers();
@@ -17,6 +28,7 @@ const AdminUserList = () => {
 
   const fetchUsers = async () => {
     try {
+      setLoading(true);
       const res = await api.get("admin/users", {
         params: {
           page: currentPage,
@@ -30,6 +42,8 @@ const AdminUserList = () => {
       setTotalPages(res.data.pages);
     } catch (err) {
       console.error("Error fetching users", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,6 +73,7 @@ const AdminUserList = () => {
     link.download = "user_list.csv";
     link.click();
   };
+  if (!role || role != "admin") return <h4>Not Authorized</h4>;
 
   return (
     <div className='p-6 bg-gray-100 dark:bg-gray-900 min-h-screen'>
@@ -73,7 +88,7 @@ const AdminUserList = () => {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-              setCurrentPage(1); // Reset to the first page when search changes
+              setCurrentPage(1);
             }}
             className='px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500'
           />
@@ -81,14 +96,13 @@ const AdminUserList = () => {
             value={roleFilter}
             onChange={(e) => {
               setRoleFilter(e.target.value);
-              setCurrentPage(1); // Reset to the first page when role changes
+              setCurrentPage(1);
             }}
             className='px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-gray-700 dark:text-white'
           >
             <option value='all'>All Roles</option>
             <option value='admin'>Admin</option>
             <option value='student'>Student</option>
-            <option value='teacher'>Teacher</option>
           </select>
           <button
             onClick={exportCSV}
@@ -99,47 +113,58 @@ const AdminUserList = () => {
         </div>
       </div>
 
+      {/* Cards */}
       <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-        {filteredUsers.map((user, i) => (
-          <motion.div
-            key={user._id}
-            className='bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border-l-4 border-indigo-500 hover:scale-[1.03] transition-all duration-200'
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-          >
-            <h2 className='text-xl font-semibold text-gray-900 dark:text-white'>
-              {user.name}
-            </h2>
-            <p className='text-sm text-gray-600 dark:text-gray-300'>
-              {user.email}
-            </p>
-            <span className='inline-block mt-2 px-3 py-1 text-sm bg-indigo-100 dark:bg-indigo-700 text-indigo-800 dark:text-white rounded-full'>
-              Role: {user.role}
-            </span>
-          </motion.div>
-        ))}
+        {loading
+          ? Array.from({ length: USERS_PER_PAGE }).map((_, idx) => (
+              <ShimmerCard key={idx} />
+            ))
+          : filteredUsers.map((user, i) => (
+              <motion.div
+                key={user._id}
+                className='bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border-l-4 border-indigo-500 hover:scale-[1.03] transition-all duration-200'
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <h2 className='text-xl font-semibold text-gray-900 dark:text-white'>
+                  {user.name}
+                </h2>
+                <p className='text-sm text-gray-600 dark:text-gray-300'>
+                  {user.email}
+                </p>
+                <span className='inline-block mt-2 px-3 py-1 text-sm bg-indigo-100 dark:bg-indigo-700 text-indigo-800 dark:text-white rounded-full'>
+                  Role: {user.role}
+                </span>
+              </motion.div>
+            ))}
       </div>
 
       {/* Pagination Controls */}
       <div className='flex justify-center mt-8 gap-2'>
-        <button
-          className='px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600'
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          ⬅ Prev
-        </button>
-        <span className='text-gray-700 dark:text-white px-4 py-2 font-semibold'>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          className='px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600'
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next ➡
-        </button>
+        {totalPages > 1 && (
+          <>
+            {currentPage > 1 && (
+              <button
+                className='px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600'
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                ⬅ Prev
+              </button>
+            )}
+            <span className='text-gray-700 dark:text-white px-4 py-2 font-semibold'>
+              Page {currentPage} of {totalPages}
+            </span>
+            {currentPage < totalPages && (
+              <button
+                className='px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600'
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                Next ➡
+              </button>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

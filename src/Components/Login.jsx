@@ -6,7 +6,7 @@ import { signInWithGoogle } from "../config/firebase";
 import axios from "axios";
 import { BASE_URL } from "../constants/constant";
 import { setUser } from "../redux/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useSignup from "../hooks/useSignup";
@@ -20,11 +20,20 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { login, loading, error } = useLogin();
+  const location = useLocation();
+  const data = location?.state;
+  const { login, loading, error } = useLogin({ path: data?.path || "/" });
   const [gooleLoginError, setGoogleLoginError] = useState(null);
   const [isSignUpForm, setIsSignUpForm] = useState(false);
   const { signup, loading: signupLoading, error: signupError } = useSignup();
+
+  useEffect(() => {
+    if (data && data.isSignUpPath) {
+      console.log("setting up signup path");
+      setIsSignUpForm(data.isSignUpPath);
+    }
+  }, []);
+
   const {
     isOtpSent,
     isOtpVerified,
@@ -38,7 +47,7 @@ const Login = () => {
   const [otp, setOtp] = useState("");
 
   const handleLoginClick = (e) => {
-    console.log("handleLoginClick");
+    // console.log("handleLoginClick");
     e.preventDefault();
     try {
       login({

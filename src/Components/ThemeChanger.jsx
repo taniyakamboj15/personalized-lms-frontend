@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { DARK_MODE, LIGHT_MODE } from "../constants/constant";
+import DARK_MODE from "../assets/darkMode.webp";
+import LIGHT_MODE from "../assets/lightMode.webp";
 
 const ThemeChanger = () => {
   const [isDark, setIsDark] = useState(false);
@@ -8,8 +9,8 @@ const ThemeChanger = () => {
     const savedTheme = localStorage.getItem("theme") || "light";
     setIsDark(savedTheme === "dark");
 
-    document.documentElement.setAttribute("data-theme", savedTheme); // 👈 for DaisyUI
-    document.documentElement.classList.toggle("dark", savedTheme === "dark"); // 👈 for Tailwind
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    document.documentElement.classList.toggle("dark", savedTheme === "dark");
   }, []);
 
   const toggleTheme = () => {

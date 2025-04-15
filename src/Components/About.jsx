@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
-import AboutLogo from "../assets/about-icon.png";
+import AboutLogo from "../assets/about-icon.webp";
 
 const About = () => {
   return (
@@ -18,7 +18,7 @@ const About = () => {
         </motion.h2>
 
         <motion.p
-          className='text-center text-gray-700 text-base sm:text-lg max-w-3xl mx-auto mb-10'
+          className='text-center text-gray-700 dark:text-gray-200 text-base sm:text-lg max-w-3xl mx-auto mb-10'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
@@ -37,7 +37,7 @@ const About = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
-          <motion.div className='whitespace-nowrap animate-marquee text-blue-700 text-sm sm:text-base font-semibold'>
+          <motion.div className='whitespace-nowrap animate-marquee text-blue-700 dark:text-cyan-300 text-sm sm:text-base font-semibold'>
             🚀 Empowering Students • 📈 Personalized Learning • 💡 Smart
             Analytics • 🎓 Future of Education • 🔥
           </motion.div>
@@ -172,7 +172,7 @@ const About = () => {
                 <h4 className='font-semibold text-indigo-700 mb-1'>
                   {step.title}
                 </h4>
-                <p className='text-gray-700 text-sm'>{step.desc}</p>
+                <p className='text-gray-800  text-sm'>{step.desc}</p>
               </div>
             </Tilt>
           ))}

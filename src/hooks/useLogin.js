@@ -5,7 +5,7 @@ import { setUser } from "../redux/userSlice";
 import { BASE_URL } from "../constants/constant";
 import { toast } from "react-toastify";
 
-const useLogin = () => {
+const useLogin = ({ path }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,7 +35,11 @@ const useLogin = () => {
       console.log(data);
       dispatch(setUser(data.data));
       toast.success("Login Successful");
-      navigate("/");
+      if (path && path == "/courses") {
+        navigate("/courses");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       console.error("Login error:", err.message);
       setError(err.message);

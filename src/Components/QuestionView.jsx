@@ -1,4 +1,3 @@
-// components/QuestionView.jsx
 import React, { useState } from "react";
 
 export const QuestionView = ({
@@ -32,7 +31,7 @@ export const QuestionView = ({
   return (
     <div className='max-w-2xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg'>
       <div className='flex justify-between items-center mb-6'>
-        <h3 className='text-xl font-semibold text-gray-700'>
+        <h3 className='text-xl font-semibold text-gray-700 dark:text-gray-300'>
           Question {questionNumber}/{totalQuestions}
         </h3>
       </div>
@@ -41,18 +40,23 @@ export const QuestionView = ({
 
       <div className='space-y-3 mb-8'>
         {question.options.map((option, index) => {
-          let buttonClass = "w-full text-left p-4 rounded-lg border";
+          let buttonClass =
+            "w-full text-left p-4 rounded-lg border text-gray-800 dark:text-white ";
 
           if (selectedOption !== null) {
             if (index === question.correctAnswer) {
-              buttonClass += " bg-green-100 border-green-300";
+              buttonClass +=
+                "bg-green-100 border-green-300 dark:bg-green-900 dark:border-green-500";
             } else if (index === selectedOption && !isCorrect) {
-              buttonClass += " bg-red-100 border-red-300";
+              buttonClass +=
+                "bg-red-100 border-red-300 dark:bg-red-900 dark:border-red-500";
             } else {
-              buttonClass += " bg-gray-50 border-gray-200";
+              buttonClass +=
+                "bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600";
             }
           } else {
-            buttonClass += " bg-white border-gray-200 hover:bg-gray-50";
+            buttonClass +=
+              "bg-white border-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700";
           }
 
           return (

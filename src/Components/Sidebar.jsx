@@ -4,11 +4,9 @@ import {
   LogIn,
   LogOut,
   User,
-  Settings,
   Book,
   Info,
   Phone,
-  Users,
   Key,
   FileUp,
   UsersRound,
@@ -16,7 +14,7 @@ import {
 import useHandleLogout from "../hooks/useHandleLogout";
 import { useSelector } from "react-redux";
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const handleLogout = useHandleLogout();
@@ -93,7 +91,7 @@ const Sidebar = ({ isOpen }) => {
             return true;
           })
           .map(({ label, icon, path, onClick }) => (
-            <li key={label}>
+            <li key={label} onClick={toggleSidebar}>
               {path ? (
                 <Link
                   to={path}

@@ -33,7 +33,7 @@ const Dashboard = () => {
 
       if (data.level > prevLevel.current) {
         setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
+        setTimeout(() => setShowConfetti(false), 4000);
       }
       prevLevel.current = data.level;
     });

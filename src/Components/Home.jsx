@@ -2,15 +2,20 @@ import React from "react";
 import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import HeroImage from "../assets/hero.png";
+import HeroImage from "../assets/hero.webp";
 import { features } from "../constants/constant";
 import { api } from "../utils/api";
 import { useEffect, useMemo, useState } from "react";
 import HeroShimmer from "./HeroShimmer";
+import CountUp from "react-countup";
+import { useInView } from "react-intersection-observer";
 
 const HomePage = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [ref1, inView1] = useInView({ triggerOnce: true });
+  const [ref2, inView2] = useInView({ triggerOnce: true });
+  const [ref3, inView3] = useInView({ triggerOnce: true });
 
   useEffect(() => {
     const fetchFeedback = async () => {
@@ -68,11 +73,15 @@ const HomePage = () => {
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
+          loading='eager'
         />
       </section>
 
       {/* Feature Cards */}
-      <section className='py-16 px-5 lg:px-20 grid grid-cols-1 md:grid-cols-3 gap-8'>
+      <section
+        className='py-16 px-5 lg:px-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3
+gap-8'
+      >
         {features.map((feature, i) => (
           <Tilt
             key={i}
@@ -82,21 +91,23 @@ const HomePage = () => {
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className='bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all'
+              className='bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all flex flex-col h-full'
             >
-              <img
-                src={feature.image}
-                alt={feature.title}
-                className=' w-full h-40 mb-4 object-cover'
-              />
+              <div className='w-full h-40 mb-4 overflow-hidden rounded-md'>
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  className='w-full h-full object-cover'
+                  loading='lazy'
+                />
+              </div>
               <h2 className='text-xl font-semibold mb-2'>{feature.title}</h2>
-              <p>{feature.desc}</p>
+              <p className='flex-grow'>{feature.desc}</p>
             </motion.div>
           </Tilt>
         ))}
       </section>
 
-      {/* Stats Section */}
       <motion.section
         className='px-5 lg:px-20 py-14 bg-gray-100 dark:bg-gray-900 text-center'
         initial={{ opacity: 0 }}
@@ -105,16 +116,29 @@ const HomePage = () => {
       >
         <h2 className='text-3xl font-bold mb-10'>Platform Impact</h2>
         <div className='grid grid-cols-1 sm:grid-cols-3 gap-6 text-xl'>
-          <div>
-            <span className='text-blue-600 font-bold text-4xl'>20K+</span>
+          {/* Learners Enroled */}
+          <div ref={ref1}>
+            <span className='text-blue-600 font-bold text-4xl'>
+              {inView1 && <CountUp end={200} duration={2} suffix='K+' />}
+            </span>
             <p>Learners Enrolled</p>
           </div>
-          <div>
-            <span className='text-green-600 font-bold text-4xl'>500+</span>
+
+          {/* Courses Completed */}
+          <div ref={ref2}>
+            <span className='text-green-600 font-bold text-4xl'>
+              {inView2 && <CountUp end={500} duration={2} suffix='+' />}
+            </span>
             <p>Courses Completed</p>
           </div>
-          <div>
-            <span className='text-purple-600 font-bold text-4xl'>4.9/5</span>
+
+          {/* User Rating */}
+          <div ref={ref3}>
+            <span className='text-purple-600 font-bold text-4xl'>
+              {inView3 && (
+                <CountUp end={4.9} duration={2} decimals={1} suffix='/5' />
+              )}
+            </span>
             <p>User Rating</p>
           </div>
         </div>

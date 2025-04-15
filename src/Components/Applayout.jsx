@@ -20,7 +20,7 @@ const Applayout = () => {
 
   return (
     <div className='min-h-screen overflow-hidden bg-gray-50 dark:bg-gray-900'>
-      <ToastContainer position='top-center' autoClose={3000} />
+      <ToastContainer position='top-center' autoClose={2000} />
       <Provider store={appStore}>
         <div className='fixed top-0 left-0 right-0 z-40'>
           <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
@@ -44,8 +44,10 @@ const Applayout = () => {
                 md:left-0 md:z-20
                 ${!isSidebarOpen ? "md:w-16" : "md:w-64"}
               `}
+              onMouseOver={() => setIsSidebarOpen(true)}
+              onMouseLeave={() => setIsSidebarOpen(false)}
             >
-              <Sidebar isOpen={isSidebarOpen} />
+              <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
             </div>
           </>
         )}
