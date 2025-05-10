@@ -1,13 +1,13 @@
 import Swal from "sweetalert2";
 
-const loginPopUp = ({ navigate, path }) => {
+const loginPopUp = ({ navigate, path, t }) => {
   Swal.fire({
     icon: "error",
-    title: "Oops...",
-    text: "You are not logged in!",
-    confirmButtonText: "Login",
+    title: t("opps"),
+    text: t("NotLogin"),
+    confirmButtonText: t("login"),
     showCancelButton: true,
-    cancelButtonText: "Signup",
+    cancelButtonText: t("register"),
     cancelButtonColor: "#2dcfcf",
     allowOutsideClick: false,
     allowEscapeKey: false,

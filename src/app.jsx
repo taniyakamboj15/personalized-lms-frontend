@@ -19,7 +19,7 @@ const UpdatePassword = lazy(() => import("./Components/ForgetPassword"));
 const LoadingSpinner = lazy(() => import("./Components/LoadingSpinner"));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
+import "./i18n.js";
 const router = createBrowserRouter([
   {
     path: "/",

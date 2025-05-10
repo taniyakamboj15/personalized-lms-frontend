@@ -8,6 +8,7 @@ import useUserAuth from "../hooks/useUserAuth";
 import { useDispatch } from "react-redux";
 import { clearUser, setUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import LanguageSwitcher from "./LanguageSwither";
 
 const Header = ({ toggleSidebar, isSidebarOpen }) => {
   const navigate = useNavigate();
@@ -41,8 +42,11 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
 
       <div className='flex-1'>
         <Link to='/' className='btn btn-link' type='button'>
-          <img src={Logo} className='h-28' alt='EduDev' />
+          <img src={Logo} className='h-24 sm:h-28 ' alt='EduDev' />
         </Link>
+      </div>
+      <div>
+        <LanguageSwitcher />
       </div>
       <div className='flex-none'>
         <ThemeChanger />

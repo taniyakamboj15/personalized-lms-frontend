@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import useHandleLogout from "../hooks/useHandleLogout";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
@@ -22,53 +23,60 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const { role } = useSelector((state) => state?.user?.user || {});
   const isLoggedIn = useSelector((state) => state.user?.isLoggedIn);
   const isAdmin = role === "admin";
-  console.log("role", role);
+  const isTutorOrAdmin = role === "admin" || role === "tutor";
 
   if (location.pathname === "/login" || location.pathname === "/register")
     return null;
+  const { t } = useTranslation();
 
   const sidebarItems = [
     {
-      label: "Dashboard",
+      label: t("dashboard"),
       icon: <User size={20} />,
       path: "/dashboard",
       onlyforLoggedIn: true,
     },
-    // {
-    //   label: "Settings",
-    //   icon: <Settings size={20} />,
-    //   path: "/settings",
-    //   onlyforLoggedIn: true,
-    // },
-    { label: "Courses", icon: <Book size={20} />, path: "/courses" },
-    { label: "About", icon: <Info size={20} />, path: "/about" },
-    { label: "Contact", icon: <Phone size={20} />, path: "/contact" },
     {
-      label: "Upload",
-      icon: <FileUp size={20} />,
-      path: "/admin-upload",
-      onlyForAdmin: true,
+      label: t("courses"),
+      icon: <Book size={20} />,
+      path: "/courses",
     },
     {
-      label: "Users",
+      label: t("about"),
+      icon: <Info size={20} />,
+      path: "/about",
+    },
+    {
+      label: t("contact"),
+      icon: <Phone size={20} />,
+      path: "/contact",
+    },
+    {
+      label: t("upload"),
+      icon: <FileUp size={20} />,
+      path: "/admin-upload",
+      onlyforTutorAndAdmin: true,
+    },
+    {
+      label: t("users"),
       icon: <UsersRound size={20} />,
       path: "/users",
       onlyForAdmin: true,
     },
     {
-      label: "Forget Password",
+      label: t("forgotPassword"),
       icon: <Key size={20} />,
       path: "/forget-password",
       onlyforLoggedIn: true,
     },
     {
-      label: "Logout",
+      label: t("logout"),
       icon: <LogOut size={20} />,
       onClick: handleLogout,
       onlyforLoggedIn: true,
     },
     {
-      label: "Login",
+      label: t("login"),
       icon: <LogIn size={20} />,
       onClick: () => {
         navigate("/login");
@@ -86,8 +94,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {sidebarItems
           .filter((item) => {
             if (item.onlyForAdmin && !isAdmin) return false;
+            if (item.onlyforTutorAndAdmin && !isTutorOrAdmin) return false;
             if (item.onlyforLoggedIn && !isLoggedIn) return false;
-            if (item.label === "Login" && isLoggedIn) return false; // Hide login if already logged in
+            if (item.label === t("login") && isLoggedIn) return false;
             return true;
           })
           .map(({ label, icon, path, onClick }) => (

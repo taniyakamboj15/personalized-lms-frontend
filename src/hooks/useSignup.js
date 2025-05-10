@@ -12,7 +12,7 @@ const useSignup = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const signup = async ({ name, email, password }) => {
+  const signup = async ({ name, email, password, role }) => {
     try {
       setLoading(true);
       setError(null);
@@ -23,7 +23,7 @@ const useSignup = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, role }),
       });
 
       if (!res.ok) {

@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import appStore from "../redux/appStore";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ScrollToTop from "./ScrollToTop";
 
 const Applayout = () => {
   const location = useLocation();
@@ -19,9 +20,11 @@ const Applayout = () => {
   const hideLayout = ["/login", "/register"].includes(location.pathname);
 
   return (
-    <div className='min-h-screen overflow-hidden bg-gray-50 dark:bg-gray-900'>
-      <ToastContainer position='top-center' autoClose={2000} />
-      <Provider store={appStore}>
+    <Provider store={appStore}>
+      <ScrollToTop />
+      <div className='min-h-screen overflow-hidden bg-gray-50 dark:bg-gray-900'>
+        <ToastContainer position='top-center' autoClose={2000} />
+
         <div className='fixed top-0 left-0 right-0 z-40'>
           <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         </div>
@@ -63,14 +66,14 @@ const Applayout = () => {
               hideLayout ? "bg-white dark:bg-gray-800" : "dark:bg-gray-800"
             }`}
           >
-            <main className='flex-1 overflow-y-auto min-h-screen'>
+            <main className='flex-1 overflow-y-auto min-h-screen scroll-smoothn md:scroll-auto'>
               <Outlet />
             </main>
             {!hideLayout && <Footer />}
           </div>
         </div>
-      </Provider>
-    </div>
+      </div>
+    </Provider>
   );
 };
 

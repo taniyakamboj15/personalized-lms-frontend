@@ -1,4 +1,3 @@
-// components/forms/AdminFormTabs.jsx
 export const AdminFormTabs = ({ activeTab, setActiveTab }) => (
   <div className='flex justify-center gap-4 mb-8'>
     {["course", "topic", "question"].map((tab) => (

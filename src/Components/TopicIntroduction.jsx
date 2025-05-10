@@ -1,4 +1,3 @@
-// components/TopicIntroduction.jsx
 export const TopicIntroduction = ({ topic, onStart }) => {
   const difficultyColors = {
     easy: "bg-green-100 text-green-800",
@@ -22,7 +21,7 @@ export const TopicIntroduction = ({ topic, onStart }) => {
       </div>
 
       <div className='prose max-w-none mb-8'>
-        <p className='text-gray-700 dark:text-gray-400 text-lg'>
+        <p className='text-gray-700 dark:text-gray-400 text-lg whitespace-pre-line'>
           {topic.description}
         </p>
       </div>

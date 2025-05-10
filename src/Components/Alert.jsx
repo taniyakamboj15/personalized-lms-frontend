@@ -3,7 +3,6 @@ import React from "react";
 const Alert = ({ message, type }) => {
   const icon =
     type === "error" ? (
-      // ❌ Cross icon for error
       <svg
         xmlns='http://www.w3.org/2000/svg'
         className='h-6 w-6 shrink-0 stroke-current'
@@ -18,7 +17,6 @@ const Alert = ({ message, type }) => {
         />
       </svg>
     ) : (
-      // ✅ Tick icon for success
       <svg
         xmlns='http://www.w3.org/2000/svg'
         className='h-6 w-6 shrink-0 stroke-current'

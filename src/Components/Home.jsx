@@ -3,20 +3,21 @@ import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import HeroImage from "../assets/hero.webp";
-import { features } from "../constants/constant";
+import { useFeatures } from "../hooks/useFeatures";
 import { api } from "../utils/api";
 import { useEffect, useMemo, useState } from "react";
 import HeroShimmer from "./HeroShimmer";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
-
+import { useTranslation } from "react-i18next";
 const HomePage = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [ref1, inView1] = useInView({ triggerOnce: true });
   const [ref2, inView2] = useInView({ triggerOnce: true });
   const [ref3, inView3] = useInView({ triggerOnce: true });
-
+  const { t } = useTranslation();
+  const features = useFeatures();
   useEffect(() => {
     const fetchFeedback = async () => {
       setLoading(true);
@@ -52,17 +53,14 @@ const HomePage = () => {
           className='max-w-xl'
         >
           <h1 className='text-5xl font-bold leading-tight mb-4'>
-            Unlock Your Potential
+            {t("unlock_potential")}{" "}
           </h1>
-          <p className='text-lg mb-6'>
-            Dive into tailored courses, solve engaging questions, and learn at
-            your own pace with our smart LMS.
-          </p>
+          <p className='text-lg mb-6'>{t("smart_lms_desc")}</p>
           <Link
             to='/courses'
             className='px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition'
           >
-            Start Learning
+            {t("start_learning")}
           </Link>
         </motion.div>
 
@@ -114,14 +112,14 @@ gap-8'
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className='text-3xl font-bold mb-10'>Platform Impact</h2>
+        <h2 className='text-3xl font-bold mb-10'>{t("platform_impact")}</h2>
         <div className='grid grid-cols-1 sm:grid-cols-3 gap-6 text-xl'>
           {/* Learners Enroled */}
           <div ref={ref1}>
             <span className='text-blue-600 font-bold text-4xl'>
               {inView1 && <CountUp end={200} duration={2} suffix='K+' />}
             </span>
-            <p>Learners Enrolled</p>
+            <p>{t("learners_enrolled")}</p>
           </div>
 
           {/* Courses Completed */}
@@ -129,7 +127,7 @@ gap-8'
             <span className='text-green-600 font-bold text-4xl'>
               {inView2 && <CountUp end={500} duration={2} suffix='+' />}
             </span>
-            <p>Courses Completed</p>
+            <p>{t("courses_completed")}</p>
           </div>
 
           {/* User Rating */}
@@ -139,7 +137,7 @@ gap-8'
                 <CountUp end={4.9} duration={2} decimals={1} suffix='/5' />
               )}
             </span>
-            <p>User Rating</p>
+            <p>{t("user_rating")}</p>
           </div>
         </div>
       </motion.section>
@@ -152,7 +150,7 @@ gap-8'
         transition={{ duration: 0.6 }}
       >
         <h2 className='text-3xl font-bold mb-10 text-center'>
-          What Learners Say
+          {t("what_learners_say")}
         </h2>
         <div className='grid md:grid-cols-2 gap-10'>
           {selectedTestimonials.map((t, i) => (
@@ -190,17 +188,13 @@ gap-8'
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className='text-3xl font-bold mb-4'>
-          Ready to start your journey?
-        </h2>
-        <p className='mb-6 text-lg'>
-          Join a course and begin transforming your skills today.
-        </p>
+        <h2 className='text-3xl font-bold mb-4'>{t("ready_to_start")}</h2>
+        <p className='mb-6 text-lg'>{t("transform_skills")} </p>
         <Link
           to='/courses'
           className='bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition'
         >
-          Get Started
+          {t("get_started")}{" "}
         </Link>
       </motion.section>
     </div>

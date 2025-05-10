@@ -1,4 +1,3 @@
-// hooks/useHandleLogout.js
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearUser } from "../redux/userSlice";

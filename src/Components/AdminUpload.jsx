@@ -10,7 +10,7 @@ import Alert from "./Alert";
 const AdminUpload = () => {
   const { role } = useSelector((state) => state?.user?.user || {});
   const navigate = useNavigate();
-  const isAdmin = role === "admin";
+  const isAdmin = role === "admin" || role === "tutor";
 
   const {
     activeTab,
@@ -45,7 +45,7 @@ const AdminUpload = () => {
     return (
       <form
         onSubmit={handleSubmit}
-        className='bg-white dark:bg-gray-800 dark:border-gray-500 border-2 p-6 rounded-2xl shadow-xl space-y-4'
+        className='bg-white dark:bg-gray-800 dark:border-gray-500 border-2  p-6 rounded-2xl shadow-xl space-y-4'
       >
         {activeTab === "course" && (
           <>

@@ -6,6 +6,7 @@ import loginPopUp from "./loginNotification";
 import ProgressBar from "./ProgressBar";
 import { api } from "../utils/api";
 import CoursesShimmer from "./CourseShimmer";
+import { useTranslation } from "react-i18next";
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
   const [enrolledCourseIds, setEnrolledCourseIds] = useState([]);
@@ -15,6 +16,7 @@ const CoursesPage = () => {
   const userId = useSelector((state) => state.user?.user?._id);
   const isLoggedIn = useSelector((state) => state.user?.isLoggedIn);
   const [courseProgress, setCourseProgress] = useState({});
+  const { t } = useTranslation();
 
   const getProgressPercent = (courseId) => {
     const progress = courseProgress[courseId];
@@ -65,7 +67,8 @@ const CoursesPage = () => {
   const handleEnroll = async (courseId) => {
     try {
       if (!isLoggedIn) {
-        loginPopUp({ navigate, path: `/courses` });
+        console.log("User not logged in, redirecting to login");
+        loginPopUp({ navigate, path: `/courses`, t });
         return;
       }
       await api.post("progress/init", { courseId });
@@ -97,7 +100,9 @@ const CoursesPage = () => {
 
   return (
     <div className='p-6'>
-      <h1 className='text-3xl font-bold mb-6 text-center'>Available Courses</h1>
+      <h1 className='text-3xl font-bold mb-6 text-center'>
+        {t("availableCourses")}
+      </h1>
       <div className='grid md:grid-cols-3 gap-6'>
         {courses.map((course) => {
           const progress = getProgressPercent(course._id);
@@ -140,14 +145,14 @@ const CoursesPage = () => {
                       disabled
                       className='inline-block mt-4 bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed'
                     >
-                      Completed
+                      {t("completed")}
                     </button>
                   ) : (
                     <Link
                       to={`/course/${course._id}`}
                       className='inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700'
                     >
-                      Continue Course
+                      {t("continueCourse")}
                     </Link>
                   )
                 ) : (
@@ -155,7 +160,7 @@ const CoursesPage = () => {
                     onClick={() => handleEnroll(course._id)}
                     className='inline-block mt-4 bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-700'
                   >
-                    Enroll to Course
+                    {t("enroll")}
                   </button>
                 )}
               </div>

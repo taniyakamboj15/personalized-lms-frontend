@@ -2,8 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 import AboutLogo from "../assets/about-icon.webp";
-
+import { useTranslation } from "react-i18next";
 const About = () => {
+  const { t } = useTranslation();
   return (
     <section className='min-h-screen w-full py-14 px-4 sm:px-6 md:px-10 bg-gradient-to-br from-white via-indigo-50 to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-800 overflow-x-hidden'>
       <div className='max-w-6xl mx-auto'>
@@ -14,7 +15,7 @@ const About = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          Welcome to Eduvibe
+          {t("heading")}
         </motion.h2>
 
         <motion.p
@@ -23,11 +24,8 @@ const About = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          Eduvibe is a dynamic and adaptive learning platform designed to
-          empower students of all levels. Whether you're preparing for
-          competitive exams, brushing up concepts, or diving into a new subject
-          — Eduvibe offers a smooth, gamified, and personalized experience that
-          evolves with you.
+          {t("description")}
+          <br />
         </motion.p>
 
         {/* Marquee */}
@@ -38,8 +36,7 @@ const About = () => {
           transition={{ delay: 0.5, duration: 0.6 }}
         >
           <motion.div className='whitespace-nowrap animate-marquee text-blue-700 dark:text-cyan-300 text-sm sm:text-base font-semibold'>
-            🚀 Empowering Students • 📈 Personalized Learning • 💡 Smart
-            Analytics • 🎓 Future of Education • 🔥
+            {t("marquee")}
           </motion.div>
         </motion.div>
 
@@ -66,25 +63,28 @@ const About = () => {
               whileHover={{ scale: 1.03 }}
             >
               <h3 className='text-lg sm:text-xl font-semibold text-indigo-700 mb-4'>
-                Why Choose Eduvibe?
+                {t("whyChoose")}
               </h3>
               <ul className='list-disc list-inside text-gray-800 text-sm sm:text-base space-y-3'>
                 <li>
-                  <strong>Personalized Learning:</strong> Eduvibe adapts as you
-                  grow.
+                  <strong>{t("aboutfeatures.personalized.title")}</strong>{" "}
+                  {t("aboutfeatures.personalized.desc")}
                 </li>
                 <li>
-                  <strong>Interactive UI:</strong> Sleek, clean, focus-first
-                  design.
+                  <strong>{t("aboutfeatures.ui.title")}</strong>{" "}
+                  {t("aboutfeatures.ui.desc")}
                 </li>
                 <li>
-                  <strong>Gamified Progress:</strong> Levels, rewards & goals.
+                  <strong>{t("aboutfeatures.gamified.title")}</strong>{" "}
+                  {t("aboutfeatures.gamified.desc")}
                 </li>
                 <li>
-                  <strong>Admin Tools:</strong> Full control over content.
+                  <strong>{t("aboutfeatures.admin.title")}</strong>{" "}
+                  {t("aboutfeatures.admin.desc")}
                 </li>
                 <li>
-                  <strong>Responsive:</strong> Learn anywhere, anytime.
+                  <strong>{t("aboutfeatures.responsive.title")}</strong>{" "}
+                  {t("aboutfeatures.responsive.desc")}
                 </li>
               </ul>
             </motion.div>
@@ -100,7 +100,7 @@ const About = () => {
           >
             <img
               src={AboutLogo}
-              alt='Learning Illustration'
+              alt={t("imageAlt")}
               className='w-full h-auto object-contain'
             />
           </motion.div>
@@ -116,14 +116,10 @@ const About = () => {
           transition={{ duration: 0.6 }}
         >
           <h3 className='text-lg sm:text-xl font-semibold text-indigo-700 mb-4 text-center'>
-            Our Vision
+            {t("vision.title")}
           </h3>
           <p className='text-gray-800 text-sm sm:text-base text-center'>
-            We believe education should be personalized, fun, and easily
-            accessible. Eduvibe bridges the gap between learning and real-time
-            engagement using smart analytics, adaptive content, and gamified
-            challenges — all tailored to help students stay motivated and
-            progress confidently.
+            {t("vision.desc")}
           </p>
         </motion.div>
 
@@ -138,23 +134,23 @@ const About = () => {
           {[
             {
               icon: "📚",
-              title: "Pick Your Course",
-              desc: "Choose from a range of topics and skill levels.",
+              title: t("steps.pick_course.title"),
+              desc: t("steps.pick_course.desc"),
             },
             {
               icon: "🧠",
-              title: "Learn Your Way",
-              desc: "Eduvibe adapts lessons based on your progress.",
+              title: t("steps.learn_way.title"),
+              desc: t("steps.learn_way.desc"),
             },
             {
               icon: "🏆",
-              title: "Earn Rewards",
-              desc: "Achieve goals and unlock new levels.",
+              title: t("steps.earn_rewards.title"),
+              desc: t("steps.earn_rewards.desc"),
             },
             {
               icon: "📊",
-              title: "Track Growth",
-              desc: "Smart analytics show your learning path clearly.",
+              title: t("steps.track_growth.title"),
+              desc: t("steps.track_growth.desc"),
             },
           ].map((step, index) => (
             <Tilt

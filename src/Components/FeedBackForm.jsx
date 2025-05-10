@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import Alert from "./Alert";
 
 export default function FeedbackForm() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ export default function FeedbackForm() {
   const userEmail = useSelector((state) => state.user?.user?.email);
   const [hover, setHover] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   useEffect(() => {
     if (userEmail) {
       setFormData((prev) => ({ ...prev, email: userEmail }));
@@ -33,12 +35,13 @@ export default function FeedbackForm() {
     }
 
     try {
-      await api.post("feedback", formData);
+      data = await api.post("feedback", formData);
       setSuccess(true);
       setFormData({ name: "", email: userEmail || "", rating: 0, message: "" });
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      console.error(err);
+      setError(err.response.data.message);
+      setTimeout(() => setError(false), 3000);
     }
   };
 
@@ -51,7 +54,7 @@ export default function FeedbackForm() {
       <h2 className='text-3xl font-extrabold text-center text-indigo-700 dark:text-pink-400 mb-6'>
         🌟 We Value Your Feedback
       </h2>
-
+      {error && <Alert message={error} type='error' />}
       <form onSubmit={handleSubmit} className='space-y-5'>
         <input
           type='text'
@@ -117,7 +120,7 @@ export default function FeedbackForm() {
 
         <button
           type='submit'
-          className='w-full bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold py-3 rounded-xl hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 shadow-lg dark:shadow-pink-800/50'
+          className='w-full bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold py-3 rounded-xl hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 shadow-lg dark:shadow-pink-800/50 hover:cursor-pointer active:scale-95'
         >
           Submit Feedback
         </button>

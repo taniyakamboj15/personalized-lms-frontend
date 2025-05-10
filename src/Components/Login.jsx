@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import useSignup from "../hooks/useSignup";
 import useOtpVerification from "../hooks/useOtpVerification";
 import { formatTime } from "../utils/formatTime";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
@@ -20,12 +21,14 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("student");
   const location = useLocation();
   const data = location?.state;
   const { login, loading, error } = useLogin({ path: data?.path || "/" });
   const [gooleLoginError, setGoogleLoginError] = useState(null);
   const [isSignUpForm, setIsSignUpForm] = useState(false);
   const { signup, loading: signupLoading, error: signupError } = useSignup();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (data && data.isSignUpPath) {
@@ -103,7 +106,7 @@ const Login = () => {
   const handleSignupClick = async (e) => {
     e.preventDefault();
     try {
-      if (!name || !email || !password) {
+      if (!name || !email || !password || !role) {
         toast.error("All fields are required");
         return;
       }
@@ -117,9 +120,9 @@ const Login = () => {
         const verified = await verifyOtp(email, otp);
         if (!verified) return;
       }
-
+      console.log("role data given", role);
       if (isOtpVerified) {
-        signup({ name, email, password });
+        signup({ name, email, password, role });
       }
     } catch (err) {
       console.log(err);
@@ -138,49 +141,61 @@ const Login = () => {
         <Alert message={error || signupError || gooleLoginError} type='error' />
       ) : null}
       <h2 className='text-xl font-semibold text-center mb-4'>
-        {isSignUpForm ? "Create Account" : "Login"}
+        {isSignUpForm ? t("create_account") : t("login")}{" "}
       </h2>
 
       <form>
         {isSignUpForm && !isOtpSent && (
           <>
-            <label className='block mb-1'>Name</label>
+            <label className='block mb-1'>{t("name")}</label>
             <input
               type='text'
               className='input w-full mb-3 text-gray-400 dark:text-gray-200'
-              placeholder='Name'
+              placeholder={t("name")}
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
-            <label className='block mb-1'>Email</label>
+            <label className='block mb-1'>{t("email")}</label>
             <input
               type='email'
               className='input w-full mb-3 text-gray-400 dark:text-gray-200'
-              placeholder='Email'
+              placeholder={t("email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <label className='block mb-1'>Password</label>
+            <label className='block mb-1'>{t("role")}</label>
+            <select
+              className='input w-full mb-3 text-gray-400 dark:text-gray-200'
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+            >
+              <option value='student'>{t("student")}</option>
+              <option value='tutor'>{t("tutor")}</option>
+            </select>
+
+            <label className='block mb-1'>{t("password")}</label>
             <input
               type='password'
               className='input w-full mb-3 text-gray-400 dark:text-gray-200'
-              placeholder='Password'
+              placeholder={t("password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </>
         )}
+
         {isSignUpForm && isOtpSent && !isOtpVerified && (
           <>
-            <p className='text-green-500 mb-2'>OTP sent to your email.</p>
-            <label className='block mb-1'>Enter OTP</label>
+            <p className='text-green-500 mb-2'>{t("otp_sent")}</p>
+            <label className='block mb-1'>{t("enter_otp")}</label>
             <input
               type='text'
               className='input w-full mb-3 text-gray-400'
-              placeholder='Enter OTP'
+              placeholder={t("enter_otp")}
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               required
@@ -188,7 +203,7 @@ const Login = () => {
 
             {timer > 0 ? (
               <p className='text-sm text-gray-500 mb-2'>
-                OTP expires in:{" "}
+                {t("otp_expires_in")}:{" "}
                 <span className='font-medium'>{formatTime(timer)}</span>
               </p>
             ) : (
@@ -197,33 +212,35 @@ const Login = () => {
                 type='button'
                 onClick={() => resendOtp(emailRef.current.value)}
               >
-                Resend OTP
+                {t("resend_otp")}
               </button>
             )}
           </>
         )}
+
         {!isSignUpForm && (
           <>
-            <label className='block mb-1'>Email</label>
+            <label className='block mb-1'>{t("email")}</label>
             <input
               type='email'
               className='input w-full mb-3 text-gray-400'
-              placeholder='Email'
+              placeholder={t("email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <label className='block mb-1'>Password</label>
+            <label className='block mb-1'>{t("password")}</label>
             <input
               type='password'
               className='input w-full mb-3 text-gray-400'
-              placeholder='Password'
+              placeholder={t("password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </>
         )}
+
         <button
           className='btn btn-neutral w-full mt-2'
           onClick={isSignUpForm ? handleSignupClick : handleLoginClick}
@@ -234,16 +251,17 @@ const Login = () => {
             <span className='loading loading-spinner loading-sm'></span>
           ) : isSignUpForm ? (
             !isOtpSent ? (
-              "Send OTP"
+              t("send_otp")
             ) : !isOtpVerified ? (
-              "Verify OTP"
+              t("verify_otp")
             ) : (
-              "Sign Up"
+              t("register")
             )
           ) : (
-            "Login"
+            t("login")
           )}
         </button>
+
         <button
           className='btn btn-outline w-full mt-4'
           onClick={handleGoogleLogin}
@@ -254,10 +272,11 @@ const Login = () => {
             alt='Google'
             className='w-5 h-5'
           />
-          Continue with Google
+          {t("continue_google")}
         </button>
+
         <p className='text-sm mt-4 text-center'>
-          {isSignUpForm ? "Already have an account?" : "Don't have an account?"}{" "}
+          {isSignUpForm ? t("already_have_account") : t("dont_have_account")}{" "}
           <span
             className='text-blue-500 cursor-pointer'
             onClick={() => {
@@ -265,7 +284,7 @@ const Login = () => {
               setOtp("");
             }}
           >
-            {isSignUpForm ? "Login" : "Sign Up"}
+            {isSignUpForm ? t("login") : t("register")}
           </span>
         </p>
       </form>
